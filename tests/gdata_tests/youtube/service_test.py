@@ -41,7 +41,7 @@ class YouTubeServiceTest(unittest.TestCase):
 
   def testRetrieveVideoFeed(self):
     feed = self.client.GetYouTubeVideoFeed(
-        'https://gdata.youtube.com/feeds/api/standardfeeds/recently_featured');
+        'http://gdata.youtube.com/feeds/api/standardfeeds/recently_featured');
     self.assert_(isinstance(feed, gdata.youtube.YouTubeVideoFeed))
     self.assert_(len(feed.entry) > 0)
     for entry in feed.entry:
@@ -94,7 +94,7 @@ class YouTubeServiceTest(unittest.TestCase):
 
   def testRetrieveVideoEntryByUri(self):
     entry = self.client.GetYouTubeVideoEntry(
-        'https://gdata.youtube.com/feeds/videos/Ncakifd_16k')
+        'http://gdata.youtube.com/feeds/videos/Ncakifd_16k')
     self.assert_(isinstance(entry, gdata.youtube.YouTubeVideoEntry))
     self.assert_(entry.title.text != '')
 
@@ -105,7 +105,7 @@ class YouTubeServiceTest(unittest.TestCase):
 
   def testRetrieveUserVideosbyUri(self):
     feed = self.client.GetYouTubeUserFeed(
-        'https://gdata.youtube.com/feeds/users/gdpython/uploads')
+        'http://gdata.youtube.com/feeds/users/gdpython/uploads')
     self.assert_(isinstance(feed, gdata.youtube.YouTubeVideoFeed))
     self.assert_(len(feed.entry) > 0)
 
@@ -285,13 +285,13 @@ class YouTubeServiceTest(unittest.TestCase):
 
     response = self.client.GetFormUploadToken(video_entry)
     self.assert_(response[0].startswith(
-        'https://uploads.gdata.youtube.com/action/FormDataUpload/'))
+        'http://uploads.gdata.youtube.com/action/FormDataUpload/'))
     self.assert_(len(response[0]) > 55)
     self.assert_(len(response[1]) > 100)
 
   def testRetrieveRelatedVideoFeedByUri(self):
     feed = self.client.GetYouTubeRelatedVideoFeed(
-        'https://gdata.youtube.com/feeds/videos/Ncakifd_16k/related')
+        'http://gdata.youtube.com/feeds/videos/Ncakifd_16k/related')
     self.assert_(isinstance(feed, gdata.youtube.YouTubeVideoFeed))
     self.assert_(len(feed.entry) > 0)
 
@@ -302,7 +302,7 @@ class YouTubeServiceTest(unittest.TestCase):
 
   def testRetrieveResponseVideoFeedByUri(self):
     feed = self.client.GetYouTubeVideoResponseFeed(
-        'https://gdata.youtube.com/feeds/videos/Ncakifd_16k/responses')
+        'http://gdata.youtube.com/feeds/videos/Ncakifd_16k/responses')
     self.assert_(isinstance(feed, gdata.youtube.YouTubeVideoResponseFeed))
     self.assert_(len(feed.entry) > 0)
 
@@ -313,7 +313,7 @@ class YouTubeServiceTest(unittest.TestCase):
 
   def testRetrieveVideoCommentFeedByUri(self):
     feed = self.client.GetYouTubeVideoCommentFeed(
-        'https://gdata.youtube.com/feeds/api/videos/Ncakifd_16k/comments')
+        'http://gdata.youtube.com/feeds/api/videos/Ncakifd_16k/comments')
     self.assert_(isinstance(feed, gdata.youtube.YouTubeVideoCommentFeed))
     self.assert_(len(feed.entry) > 0)
 
@@ -343,7 +343,7 @@ class YouTubeServiceTest(unittest.TestCase):
 
   def testRetrievePlaylistFeedByUri(self):
     feed = self.client.GetYouTubePlaylistFeed(
-        'https://gdata.youtube.com/feeds/users/gdpython/playlists')
+        'http://gdata.youtube.com/feeds/users/gdpython/playlists')
     self.assert_(isinstance(feed, gdata.youtube.YouTubePlaylistFeed))
     self.assert_(len(feed.entry) > 0)
 
@@ -354,7 +354,7 @@ class YouTubeServiceTest(unittest.TestCase):
 
   def testRetrievePlaylistVideoFeed(self):
     feed = self.client.GetYouTubePlaylistVideoFeed(
-        'https://gdata.youtube.com/feeds/api/playlists/BCB3BB96DF51B505')
+        'http://gdata.youtube.com/feeds/api/playlists/BCB3BB96DF51B505')
     self.assert_(isinstance(feed, gdata.youtube.YouTubePlaylistVideoFeed))
     self.assert_(len(feed.entry) > 0)
     self.assert_(isinstance(feed.entry[0],
@@ -474,7 +474,7 @@ class YouTubeServiceTest(unittest.TestCase):
 
   def testRetrieveSubscriptionFeedByUri(self):
     feed = self.client.GetYouTubeSubscriptionFeed(
-        'https://gdata.youtube.com/feeds/users/gdpython/subscriptions')
+        'http://gdata.youtube.com/feeds/users/gdpython/subscriptions')
     self.assert_(isinstance(feed, gdata.youtube.YouTubeSubscriptionFeed))
     self.assert_(len(feed.entry) == 3)
 
@@ -526,7 +526,7 @@ class YouTubeServiceTest(unittest.TestCase):
 
   def testRetrieveUserProfileByUri(self):
     user = self.client.GetYouTubeUserEntry(
-        'https://gdata.youtube.com/feeds/users/gdpython')
+        'http://gdata.youtube.com/feeds/users/gdpython')
     self.assert_(isinstance(user, gdata.youtube.YouTubeUserEntry))
     self.assertEquals(user.location.text, 'US')
 
@@ -556,7 +556,7 @@ class YouTubeServiceTest(unittest.TestCase):
 
   def testRetrieveContactFeedByUri(self):
     feed = self.client.GetYouTubeContactFeed(
-        'https://gdata.youtube.com/feeds/users/gdpython/contacts')
+        'http://gdata.youtube.com/feeds/users/gdpython/contacts')
     self.assert_(isinstance(feed, gdata.youtube.YouTubeContactFeed))
     self.assertEquals(len(feed.entry), 1)
 

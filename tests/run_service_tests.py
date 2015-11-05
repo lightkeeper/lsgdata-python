@@ -10,6 +10,7 @@ import getpass
 import atom_tests.service_test
 import gdata_tests.service_test
 import gdata_tests.apps.service_test
+import gdata_tests.base.service_test
 import gdata_tests.books.service_test
 import gdata_tests.calendar.service_test
 import gdata_tests.docs.service_test

@@ -48,7 +48,7 @@ SETTINGS_MENU = ['1) Change current site.',
 class SitesExample(object):
   """Wrapper around the Sites API functionality."""
 
-  def __init__(self, site_name=None, site_domain=None, debug=False):
+  def __init__(self, site_name=None, site_domain=None, ssl=False, debug=False):
     if site_domain is None:
       site_domain = self.PromptDomain()
 
@@ -60,6 +60,7 @@ class SitesExample(object):
     self.client = gdata.sites.client.SitesClient(
         source=SOURCE_APP_NAME, site=site_name, domain=site_domain)
     self.client.http_client.debug = debug
+    self.client.ssl = ssl
 
     try:
       gdata.sample_util.authorize_client(
@@ -411,26 +412,30 @@ def main():
 
   try:
     opts, args = getopt.getopt(sys.argv[1:], '',
-                               ['site=', 'domain=', 'debug'])
+                               ['site=', 'domain=', 'ssl', 'debug'])
   except getopt.error, msg:
     print """python sites_sample.py --site [sitename]
                                     --domain [domain or "site"]
+                                    --ssl [enables https if set]
                                     --debug [prints debug info if set]"""
     sys.exit(2)
 
   site = None
   domain = None
   debug = False
+  ssl = False
 
   for option, arg in opts:
     if option == '--site':
       site = arg
     elif option == '--domain':
       domain = arg
+    elif option == '--ssl':
+      ssl = True
     elif option == '--debug':
       debug = True
 
-  sample = SitesExample(site, domain, debug=debug)
+  sample = SitesExample(site, domain, ssl=ssl, debug=debug)
   sample.Run()
 
 

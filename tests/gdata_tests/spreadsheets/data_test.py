@@ -527,30 +527,6 @@ class SpreadsheetEntryTest(unittest.TestCase):
                      'http://spreadsheets.google.com/feeds/spreadsheets'
                      '/private/full/key')
 
-  def test_get_spreadsheet_key(self):
-    self.assertEqual(self.spreadsheet.get_spreadsheet_key(), 'key')
-    # Change the value of the self link.
-    self.spreadsheet.id.text = '42'
-    self.assertEqual(self.spreadsheet.GetSpreadsheetKey(), '42')
-
-
-class WorksheetEntryTest(unittest.TestCase):
-
-  def setUp(self):
-    self.worksheets = atom.core.parse(
-        WORKSHEETS_FEED, gdata.spreadsheets.data.WorksheetsFeed)
-
-  def test_check_parsing(self):
-    self.assertEqual(len(self.worksheets.entry), 1)
-    self.assertEqual(self.worksheets.entry[0].get_id(),
-        'http://spreadsheets.google.com/feeds/worksheets/0/private/full/1')
-
-  def test_get_worksheet_id(self):
-    self.assertEqual(self.worksheets.entry[0].get_worksheet_id(), '1')
-    self.worksheets.entry[0].id.text = '////spam'
-    self.assertEqual(self.worksheets.entry[0].GetWorksheetId(), 'spam')
-
-
 
 class ListEntryTest(unittest.TestCase):
 
@@ -621,45 +597,6 @@ class RecordEntryTest(unittest.TestCase):
     self.assertRaises(gdata.spreadsheets.data.FieldMissing,
                       self.records.entry[0].value_for_name, 'Foo')
     self.assertEqual(self.records.entry[1].value_for_name('Age'), '22')
-
-
-class BatchRequestTest(unittest.TestCase):
-
-  def setUp(self):
-    self.feed = gdata.spreadsheets.data.build_batch_cells_update('skey', 'wid')
-
-  def test_builder(self):
-    self.assertEqual(len(self.feed.link), 1)
-    self.assertEqual(self.feed.link[0].rel, 'edit')
-    self.assertEqual(self.feed.link[0].href,
-        'https://spreadsheets.google.com/feeds/cells/skey/wid/'
-        'private/full/batch')
-    self.assertEqual(self.feed.id.text,
-        'https://spreadsheets.google.com/feeds/cells/skey/wid/'
-        'private/full')
-    self.assertEqual(len(self.feed.entry), 0)
-
-  def test_set_cell(self):
-    self.feed.add_set_cell(1, 2, 'value')
-    self.assertEqual(len(self.feed.entry), 1)
-    self.assertEqual(self.feed.entry[0].id.text,
-        'https://spreadsheets.google.com/feeds/cells/skey/wid/private/'
-        'full/R1C2')
-    self.assertEqual(self.feed.entry[0].cell.row, '1')
-    self.assertEqual(self.feed.entry[0].cell.col, '2')
-    self.assertEqual(self.feed.entry[0].cell.input_value, 'value')
-    self.assertEqual(self.feed.entry[0].batch_operation.type, 'update')
-    self.assertEqual(self.feed.entry[0].batch_id.text, '0')
-    self.feed.add_set_cell(3, 1, 'spam')
-    self.assertEqual(len(self.feed.entry), 2)
-    self.assertEqual(self.feed.entry[1].id.text,
-        'https://spreadsheets.google.com/feeds/cells/skey/wid/private/'
-        'full/R3C1')
-    self.assertEqual(self.feed.entry[1].cell.row, '3')
-    self.assertEqual(self.feed.entry[1].cell.col, '1')
-    self.assertEqual(self.feed.entry[1].cell.input_value, 'spam')
-    self.assertEqual(self.feed.entry[1].batch_operation.type, 'update')
-    self.assertEqual(self.feed.entry[1].batch_id.text, '1')
 
 
 class DataClassSanityTest(unittest.TestCase):

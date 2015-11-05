@@ -82,7 +82,6 @@ class SimpleCRUD:
            'insert {row_data} (example: insert label=content)\n'
            'update {row_index} {row_data}\n'
            'delete {row_index}\n'
-           'Note: No uppercase letters in column names!\n'
            '\n')
     input = raw_input('Command: ')
     command = input.split(' ' , 1)

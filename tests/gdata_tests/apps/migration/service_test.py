@@ -1,6 +1,6 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python
 #
-# Copyright 2008 Google Inc. All Rights Reserved.
+# Copyright (C) 2008 Google
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,15 +21,15 @@ __author__ = 'google-apps-apis@googlegroups.com'
 
 
 import getpass
-import unittest
 import gdata.apps.migration.service
+import unittest
 
 
 domain = ''
 admin_email = ''
 admin_password = ''
 username = ''
-MESSAGE = """From: joe@blow.com
+MESS="""From: joe@blow.com
 To: jane@doe.com
 Date: Mon, 29 Sep 2008 20:00:34 -0500 (CDT)
 Subject: %s
@@ -42,28 +42,29 @@ class MigrationTest(unittest.TestCase):
 
   def setUp(self):
     self.ms = gdata.apps.migration.service.MigrationService(
-        email=admin_email, password=admin_password, domain=domain)
+      email=admin_email, password=admin_password, domain=domain)
     self.ms.ProgrammaticLogin()
+
 
   def testImportMail(self):
     self.ms.ImportMail(user_name=username,
-                       mail_message=MESSAGE % ('Test subject', 'Test body'),
+                       mail_message=MESS%('Test subject', 'Test body'),
                        mail_item_properties=['IS_STARRED'],
                        mail_labels=['Test'])
 
-  def testImportMultipleMails(self):
-    for i in xrange(1, 10):
-      self.ms.AddMailEntry(mail_message=MESSAGE % ('Test thread %d' % i,
-                                                   'Test thread'),
-                           mail_item_properties=['IS_UNREAD'],
-                           mail_labels=['Test', 'Thread'],
-                           identifier=str(i))
-    self.ms.ImportMultipleMails(user_name=username)
+  def testBatch(self):
+    for i in xrange(1,10):
+      self.ms.AddBatchEntry(mail_message=MESS%('Test batch %d'%i, 'Test batch'),
+                            mail_item_properties=['IS_INBOX'],
+                            mail_labels=['Test', 'Batch'])
+    self.ms.SubmitBatch(user_name=username)
 
 
 if __name__ == '__main__':
-  print("Google Apps Email Migration Service Tests\n\n"
-        "NOTE: Please run these tests only with a test user account.\n")
+  print("""Google Apps Email Migration Service Tests
+
+NOTE: Please run these tests only with a test user account.
+""")
   domain = raw_input('Google Apps domain: ')
   admin_email = '%s@%s' % (raw_input('Administrator username: '), domain)
   admin_password = getpass.getpass('Administrator password: ')

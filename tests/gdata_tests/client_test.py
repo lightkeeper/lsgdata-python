@@ -315,8 +315,7 @@ class QueryTest(unittest.TestCase):
     request = atom.http_core.HttpRequest()
     gdata.client.Query(
         text_query='foo', categories=['a', 'b']).modify_request(request)
-    # categories param from above is named category in URL
-    self.assertEqual(request.uri.query, {'q': 'foo', 'category': 'a,b'})
+    self.assertEqual(request.uri.query, {'q': 'foo', 'categories': 'a,b'})
 
   def test_client_uses_query_modification(self):
     """If the Query is passed as an unexpected param it should apply"""
@@ -343,41 +342,13 @@ class VersionConversionTest(unittest.TestCase):
     self.assertEquals(gdata.client.get_xml_version('10.4'), 10)
 
 
-class UpdateTest(unittest.TestCase):
-  """Test Update/PUT"""
-
-  def test_update_uri_editlink(self):
-    """Test that the PUT uri is grabbed from the entry's edit link"""
-    client = gdata.client.GDClient()
-    client.http_client = atom.mock_http_core.SettableHttpClient(
-        200, 'OK', gdata.data.GDEntry().ToString(), {})
-    entry = gdata.data.GDEntry()
-    entry.link.append(atom.data.Link(rel='edit', href='https://example.com/edit'))
-    response = client.update(entry)
-    request = client.http_client.last_request
-    self.assertEqual(str(client.http_client.last_request.uri),
-                     'https://example.com/edit')
-
-  def test_update_uri(self):
-    """Test that when passed, a uri overrides the entry's edit link"""
-    client = gdata.client.GDClient()
-    client.http_client = atom.mock_http_core.SettableHttpClient(
-        200, 'OK', gdata.data.GDEntry().ToString(), {})
-    entry = gdata.data.GDEntry()
-    entry.link.append(atom.data.Link(rel='edit', href='https://example.com/edit'))
-    response = client.update(entry, uri='https://example.com/test')
-    self.assertEqual(str(client.http_client.last_request.uri),
-                     'https://example.com/test')
-
-
 def suite():
   return unittest.TestSuite((unittest.makeSuite(ClientLoginTest, 'test'),
                              unittest.makeSuite(AuthSubTest, 'test'),
                              unittest.makeSuite(OAuthTest, 'test'),
                              unittest.makeSuite(RequestTest, 'test'),
                              unittest.makeSuite(VersionConversionTest, 'test'),
-                             unittest.makeSuite(QueryTest, 'test'),
-                             unittest.makeSuite(UpdateTest, 'test')))
+                             unittest.makeSuite(QueryTest, 'test')))
 
 
 if __name__ == '__main__':

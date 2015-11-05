@@ -52,7 +52,7 @@ class DataFeedDemo(object):
   def __init__(self):
     """Inits DataFeedDemo."""
 
-    SOURCE_APP_NAME = 'Google-dataFeedDemoPython-v2'
+    SOURCE_APP_NAME = 'Google-dataFeedDemoPython-v1'
     my_client = gdata.analytics.client.AnalyticsClient(source=SOURCE_APP_NAME)
 
     try:
@@ -94,7 +94,6 @@ class DataFeedDemo(object):
     print 'Results Returned    = ' + self.feed.items_per_page.text
     print 'Start Date          = ' + self.feed.start_date.text
     print 'End Date            = ' + self.feed.end_date.text
-    print 'Has Sampled Data    = ' + str(self.feed.HasSampledData())
 
   def PrintDataSources(self):
     """Prints data found in the data source elements.
@@ -135,15 +134,12 @@ class DataFeedDemo(object):
     """Prints segment information if the query has advanced segments
     defined."""
 
-    print '-------- Advanced Segments Information --------'
     if self.feed.segment:
-      if segment.name:
-        print 'Segment Name       = ' + str(segment.name)
-      if segment.id:
-        print 'Segment Id         = ' + str(segment.id)
-      print 'Segment Definition = ' + segment.definition.text
-    else:
-      print 'No segments defined'
+      print '-------- Advanced Segments Information --------'
+      for segment in self.feed.segment:
+        print 'Segment Name       = ' + segment.name
+        print 'Segment Id         = ' + segment.id
+        print 'Segment Definition = ' + segment.definition.value
 
   def PrintOneEntry(self):
     """Prints all the important Google Analytics data found in an entry"""
@@ -182,3 +178,4 @@ class DataFeedDemo(object):
 
 if __name__ == '__main__':
   main()
+

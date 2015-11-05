@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="gdata.html"><font color="#ffffff">gdata</font></a>.<a href="gdata.spreadsheets.html"><font color="#ffffff">spreadsheets</font></a>.data</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/usr/local/google/home/afshar/src/external-gdata-release/google3/src/gdata/spreadsheets/data.py">/usr/local/google/home/afshar/src/external-gdata-release/google3/src/gdata/spreadsheets/data.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/usr/local/google/home/jcgregorio/projects/gdata/src/gdata/spreadsheets/data.py">/usr/local/google/home/jcgregorio/projects/gdata/src/gdata/spreadsheets/data.py</a></font></td></tr></table>
     <p><tt>Provides&nbsp;classes&nbsp;and&nbsp;constants&nbsp;for&nbsp;the&nbsp;XML&nbsp;in&nbsp;the&nbsp;Google&nbsp;Spreadsheets&nbsp;API.<br>
 &nbsp;<br>
 Documentation&nbsp;for&nbsp;the&nbsp;raw&nbsp;XML&nbsp;which&nbsp;these&nbsp;classes&nbsp;represent&nbsp;can&nbsp;be&nbsp;found&nbsp;here:<br>
@@ -552,7 +552,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="CellEntry-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="CellEntry-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="CellEntry-GetAlternateLink"><strong>GetAlternateLink</strong></a> = get_alternate_link(self)</dt></dl>
 
@@ -587,7 +587,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="CellEntry-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="CellEntry-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="CellEntry-get_alternate_link"><strong>get_alternate_link</strong></a>(self)</dt></dl>
 
@@ -632,14 +632,7 @@ operations&nbsp;in&nbsp;one&nbsp;HTTP&nbsp;request.<br>&nbsp;</tt></td></tr>
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="CellsFeed-AddSetCell"><strong>AddSetCell</strong></a> = <a href="#CellsFeed-add_set_cell">add_set_cell</a>(self, row, col, input_value)</dt></dl>
-
-<dl><dt><a name="CellsFeed-add_set_cell"><strong>add_set_cell</strong></a>(self, row, col, input_value)</dt><dd><tt>Adds&nbsp;a&nbsp;request&nbsp;to&nbsp;change&nbsp;the&nbsp;contents&nbsp;of&nbsp;a&nbsp;cell&nbsp;to&nbsp;this&nbsp;batch&nbsp;request.<br>
-&nbsp;<br>
-Args:<br>
-&nbsp;&nbsp;row:&nbsp;int,&nbsp;The&nbsp;row&nbsp;number&nbsp;for&nbsp;this&nbsp;cell.&nbsp;Numbering&nbsp;starts&nbsp;at&nbsp;1.<br>
-&nbsp;&nbsp;col:&nbsp;int,&nbsp;The&nbsp;column&nbsp;number&nbsp;for&nbsp;this&nbsp;cell.&nbsp;Starts&nbsp;at&nbsp;1.<br>
-&nbsp;&nbsp;input_value:&nbsp;str,&nbsp;The&nbsp;desired&nbsp;formula/content&nbsp;this&nbsp;cell&nbsp;should&nbsp;contain.</tt></dd></dl>
+<dl><dt><a name="CellsFeed-batch_set_cell"><strong>batch_set_cell</strong></a>(row, col, input)</dt></dl>
 
 <hr>
 Data and other attributes defined here:<br>
@@ -1110,7 +1103,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="CellsFeed-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="CellsFeed-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="CellsFeed-GetAlternateLink"><strong>GetAlternateLink</strong></a> = get_alternate_link(self)</dt></dl>
 
@@ -1145,7 +1138,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="CellsFeed-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="CellsFeed-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="CellsFeed-get_alternate_link"><strong>get_alternate_link</strong></a>(self)</dt></dl>
 
@@ -1645,7 +1638,7 @@ Data descriptors defined here:<br>
 </dl>
 <hr>
 Methods inherited from <a href="exceptions.html#Exception">exceptions.Exception</a>:<br>
-<dl><dt><a name="Error-__init__"><strong>__init__</strong></a>(...)</dt><dd><tt>x.<a href="#Error-__init__">__init__</a>(...)&nbsp;initializes&nbsp;x;&nbsp;see&nbsp;help(type(x))&nbsp;for&nbsp;signature</tt></dd></dl>
+<dl><dt><a name="Error-__init__"><strong>__init__</strong></a>(...)</dt><dd><tt>x.<a href="#Error-__init__">__init__</a>(...)&nbsp;initializes&nbsp;x;&nbsp;see&nbsp;x.__class__.__doc__&nbsp;for&nbsp;signature</tt></dd></dl>
 
 <hr>
 Data and other attributes inherited from <a href="exceptions.html#Exception">exceptions.Exception</a>:<br>
@@ -1857,7 +1850,7 @@ Data descriptors defined here:<br>
 </dl>
 <hr>
 Methods inherited from <a href="exceptions.html#Exception">exceptions.Exception</a>:<br>
-<dl><dt><a name="FieldMissing-__init__"><strong>__init__</strong></a>(...)</dt><dd><tt>x.<a href="#FieldMissing-__init__">__init__</a>(...)&nbsp;initializes&nbsp;x;&nbsp;see&nbsp;help(type(x))&nbsp;for&nbsp;signature</tt></dd></dl>
+<dl><dt><a name="FieldMissing-__init__"><strong>__init__</strong></a>(...)</dt><dd><tt>x.<a href="#FieldMissing-__init__">__init__</a>(...)&nbsp;initializes&nbsp;x;&nbsp;see&nbsp;x.__class__.__doc__&nbsp;for&nbsp;signature</tt></dd></dl>
 
 <hr>
 Data and other attributes inherited from <a href="exceptions.html#Exception">exceptions.Exception</a>:<br>
@@ -2070,7 +2063,7 @@ Data descriptors inherited from <a href="gdata.spreadsheets.data.html#Error">Err
 </dl>
 <hr>
 Methods inherited from <a href="exceptions.html#Exception">exceptions.Exception</a>:<br>
-<dl><dt><a name="HeaderNotSet-__init__"><strong>__init__</strong></a>(...)</dt><dd><tt>x.<a href="#HeaderNotSet-__init__">__init__</a>(...)&nbsp;initializes&nbsp;x;&nbsp;see&nbsp;help(type(x))&nbsp;for&nbsp;signature</tt></dd></dl>
+<dl><dt><a name="HeaderNotSet-__init__"><strong>__init__</strong></a>(...)</dt><dd><tt>x.<a href="#HeaderNotSet-__init__">__init__</a>(...)&nbsp;initializes&nbsp;x;&nbsp;see&nbsp;x.__class__.__doc__&nbsp;for&nbsp;signature</tt></dd></dl>
 
 <hr>
 Data and other attributes inherited from <a href="exceptions.html#Exception">exceptions.Exception</a>:<br>
@@ -2133,11 +2126,6 @@ See&nbsp;also&nbsp;the&nbsp;explanation&nbsp;of&nbsp;column&nbsp;names&nbsp;in&n
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="ListEntry-from_dict"><strong>from_dict</strong></a>(self, values)</dt><dd><tt>Sets&nbsp;values&nbsp;for&nbsp;this&nbsp;row&nbsp;from&nbsp;the&nbsp;dictionary.<br>
-&nbsp;<br>
-Old&nbsp;values&nbsp;which&nbsp;are&nbsp;already&nbsp;in&nbsp;the&nbsp;entry&nbsp;will&nbsp;not&nbsp;be&nbsp;removed&nbsp;unless<br>
-they&nbsp;are&nbsp;overwritten&nbsp;with&nbsp;new&nbsp;values&nbsp;from&nbsp;the&nbsp;dict.</tt></dd></dl>
-
 <dl><dt><a name="ListEntry-get_value"><strong>get_value</strong></a>(self, column_name)</dt><dd><tt>Returns&nbsp;the&nbsp;displayed&nbsp;text&nbsp;for&nbsp;the&nbsp;desired&nbsp;column&nbsp;in&nbsp;this&nbsp;row.<br>
 &nbsp;<br>
 The&nbsp;formula&nbsp;or&nbsp;input&nbsp;which&nbsp;generated&nbsp;the&nbsp;displayed&nbsp;value&nbsp;is&nbsp;not&nbsp;accessible<br>
@@ -2156,8 +2144,6 @@ No&nbsp;client&nbsp;side&nbsp;checking&nbsp;is&nbsp;performed&nbsp;on&nbsp;the&n
 ensure&nbsp;that&nbsp;the&nbsp;column_name&nbsp;is&nbsp;the&nbsp;local&nbsp;tag&nbsp;name&nbsp;in&nbsp;the&nbsp;gsx&nbsp;tag&nbsp;for&nbsp;the<br>
 column.&nbsp;For&nbsp;example,&nbsp;the&nbsp;column_name&nbsp;will&nbsp;not&nbsp;contain&nbsp;special&nbsp;characters,<br>
 spaces,&nbsp;uppercase&nbsp;letters,&nbsp;etc.</tt></dd></dl>
-
-<dl><dt><a name="ListEntry-to_dict"><strong>to_dict</strong></a>(self)</dt><dd><tt>Converts&nbsp;this&nbsp;row&nbsp;to&nbsp;a&nbsp;mapping&nbsp;of&nbsp;column&nbsp;names&nbsp;to&nbsp;their&nbsp;values.</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="gdata.data.html#GDEntry">gdata.data.GDEntry</a>:<br>
@@ -2416,7 +2402,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="ListEntry-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="ListEntry-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="ListEntry-GetAlternateLink"><strong>GetAlternateLink</strong></a> = get_alternate_link(self)</dt></dl>
 
@@ -2451,7 +2437,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="ListEntry-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="ListEntry-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="ListEntry-get_alternate_link"><strong>get_alternate_link</strong></a>(self)</dt></dl>
 
@@ -2912,7 +2898,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="ListsFeed-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="ListsFeed-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="ListsFeed-GetAlternateLink"><strong>GetAlternateLink</strong></a> = get_alternate_link(self)</dt></dl>
 
@@ -2947,7 +2933,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="ListsFeed-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="ListsFeed-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="ListsFeed-get_alternate_link"><strong>get_alternate_link</strong></a>(self)</dt></dl>
 
@@ -3262,7 +3248,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="Record-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="Record-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="Record-GetAlternateLink"><strong>GetAlternateLink</strong></a> = get_alternate_link(self)</dt></dl>
 
@@ -3297,7 +3283,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="Record-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="Record-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="Record-get_alternate_link"><strong>get_alternate_link</strong></a>(self)</dt></dl>
 
@@ -3590,7 +3576,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="RecordsFeed-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="RecordsFeed-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="RecordsFeed-GetAlternateLink"><strong>GetAlternateLink</strong></a> = get_alternate_link(self)</dt></dl>
 
@@ -3625,7 +3611,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="RecordsFeed-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="RecordsFeed-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="RecordsFeed-get_alternate_link"><strong>get_alternate_link</strong></a>(self)</dt></dl>
 
@@ -3817,11 +3803,7 @@ Data and other attributes inherited from <a href="atom.core.html#XmlElement">ato
 Methods defined here:<br>
 <dl><dt><a name="Spreadsheet-FindWorksheetsFeed"><strong>FindWorksheetsFeed</strong></a> = <a href="#Spreadsheet-find_worksheets_feed">find_worksheets_feed</a>(self)</dt></dl>
 
-<dl><dt><a name="Spreadsheet-GetSpreadsheetKey"><strong>GetSpreadsheetKey</strong></a> = <a href="#Spreadsheet-get_spreadsheet_key">get_spreadsheet_key</a>(self)</dt></dl>
-
 <dl><dt><a name="Spreadsheet-find_worksheets_feed"><strong>find_worksheets_feed</strong></a>(self)</dt></dl>
-
-<dl><dt><a name="Spreadsheet-get_spreadsheet_key"><strong>get_spreadsheet_key</strong></a>(self)</dt><dd><tt>Extracts&nbsp;the&nbsp;spreadsheet&nbsp;key&nbsp;unique&nbsp;to&nbsp;this&nbsp;spreadsheet.</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="gdata.data.html#GDEntry">gdata.data.GDEntry</a>:<br>
@@ -4080,7 +4062,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="Spreadsheet-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="Spreadsheet-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="Spreadsheet-GetAlternateLink"><strong>GetAlternateLink</strong></a> = get_alternate_link(self)</dt></dl>
 
@@ -4115,7 +4097,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="Spreadsheet-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="Spreadsheet-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="Spreadsheet-get_alternate_link"><strong>get_alternate_link</strong></a>(self)</dt></dl>
 
@@ -4408,7 +4390,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="SpreadsheetsFeed-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="SpreadsheetsFeed-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="SpreadsheetsFeed-GetAlternateLink"><strong>GetAlternateLink</strong></a> = get_alternate_link(self)</dt></dl>
 
@@ -4443,7 +4425,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="SpreadsheetsFeed-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="SpreadsheetsFeed-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="SpreadsheetsFeed-get_alternate_link"><strong>get_alternate_link</strong></a>(self)</dt></dl>
 
@@ -4763,7 +4745,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="Table-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="Table-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="Table-GetAlternateLink"><strong>GetAlternateLink</strong></a> = get_alternate_link(self)</dt></dl>
 
@@ -4798,7 +4780,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="Table-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="Table-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="Table-get_alternate_link"><strong>get_alternate_link</strong></a>(self)</dt></dl>
 
@@ -5091,7 +5073,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="TablesFeed-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="TablesFeed-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="TablesFeed-GetAlternateLink"><strong>GetAlternateLink</strong></a> = get_alternate_link(self)</dt></dl>
 
@@ -5126,7 +5108,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="TablesFeed-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="TablesFeed-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="TablesFeed-get_alternate_link"><strong>get_alternate_link</strong></a>(self)</dt></dl>
 
@@ -5316,12 +5298,6 @@ Data and other attributes inherited from <a href="atom.core.html#XmlElement">ato
 <dd><a href="atom.data.html#LinkFinder">atom.data.LinkFinder</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
-<hr>
-Methods defined here:<br>
-<dl><dt><a name="WorksheetEntry-GetWorksheetId"><strong>GetWorksheetId</strong></a> = <a href="#WorksheetEntry-get_worksheet_id">get_worksheet_id</a>(self)</dt></dl>
-
-<dl><dt><a name="WorksheetEntry-get_worksheet_id"><strong>get_worksheet_id</strong></a>(self)</dt><dd><tt>The&nbsp;worksheet&nbsp;ID&nbsp;identifies&nbsp;this&nbsp;worksheet&nbsp;in&nbsp;its&nbsp;spreadsheet.</tt></dd></dl>
-
 <hr>
 Data and other attributes defined here:<br>
 <dl><dt><strong>col_count</strong> = &lt;class 'gdata.spreadsheets.data.ColCount'&gt;<dd><tt>The&nbsp;gs:colCount&nbsp;element.<br>
@@ -5593,7 +5569,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="WorksheetEntry-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="WorksheetEntry-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="WorksheetEntry-GetAlternateLink"><strong>GetAlternateLink</strong></a> = get_alternate_link(self)</dt></dl>
 
@@ -5628,7 +5604,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="WorksheetEntry-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="WorksheetEntry-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="WorksheetEntry-get_alternate_link"><strong>get_alternate_link</strong></a>(self)</dt></dl>
 
@@ -5921,7 +5897,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="WorksheetsFeed-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="WorksheetsFeed-FindUrl"><strong>FindUrl</strong></a> = find_url(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="WorksheetsFeed-GetAlternateLink"><strong>GetAlternateLink</strong></a> = get_alternate_link(self)</dt></dl>
 
@@ -5956,7 +5932,7 @@ Returns:<br>
 &nbsp;&nbsp;A&nbsp;str&nbsp;containing&nbsp;the&nbsp;link's&nbsp;href&nbsp;or&nbsp;None&nbsp;if&nbsp;none&nbsp;of&nbsp;the&nbsp;links&nbsp;had&nbsp;rel<br>
 &nbsp;&nbsp;equal&nbsp;to&nbsp;'self'</tt></dd></dl>
 
-<dl><dt><a name="WorksheetsFeed-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;(as&nbsp;a&nbsp;string)&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
+<dl><dt><a name="WorksheetsFeed-find_url"><strong>find_url</strong></a>(self, rel)</dt><dd><tt>Returns&nbsp;the&nbsp;URL&nbsp;in&nbsp;a&nbsp;link&nbsp;with&nbsp;the&nbsp;desired&nbsp;rel&nbsp;value.</tt></dd></dl>
 
 <dl><dt><a name="WorksheetsFeed-get_alternate_link"><strong>get_alternate_link</strong></a>(self)</dt></dl>
 
@@ -5977,38 +5953,12 @@ consider&nbsp;using&nbsp;find_url&nbsp;instead.</tt></dd></dl>
 
 </td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#eeaa77">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
-    
-<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-BuildBatchCellsUpdate"><strong>BuildBatchCellsUpdate</strong></a> = build_batch_cells_update(spreadsheet_key, worksheet_id)</dt><dd><tt>Creates&nbsp;an&nbsp;empty&nbsp;cells&nbsp;feed&nbsp;for&nbsp;adding&nbsp;batch&nbsp;cell&nbsp;updates&nbsp;to.<br>
-&nbsp;<br>
-Call&nbsp;batch_set_cell&nbsp;on&nbsp;the&nbsp;resulting&nbsp;<a href="#CellsFeed">CellsFeed</a>&nbsp;instance&nbsp;then&nbsp;send&nbsp;the&nbsp;batch<br>
-request&nbsp;TODO:&nbsp;fill&nbsp;in<br>
-&nbsp;<br>
-Args:<br>
-&nbsp;&nbsp;spreadsheet_key:&nbsp;The&nbsp;ID&nbsp;of&nbsp;the&nbsp;spreadsheet&nbsp;<br>
-&nbsp;&nbsp;worksheet_id:</tt></dd></dl>
- <dl><dt><a name="-build_batch_cells_update"><strong>build_batch_cells_update</strong></a>(spreadsheet_key, worksheet_id)</dt><dd><tt>Creates&nbsp;an&nbsp;empty&nbsp;cells&nbsp;feed&nbsp;for&nbsp;adding&nbsp;batch&nbsp;cell&nbsp;updates&nbsp;to.<br>
-&nbsp;<br>
-Call&nbsp;batch_set_cell&nbsp;on&nbsp;the&nbsp;resulting&nbsp;<a href="#CellsFeed">CellsFeed</a>&nbsp;instance&nbsp;then&nbsp;send&nbsp;the&nbsp;batch<br>
-request&nbsp;TODO:&nbsp;fill&nbsp;in<br>
-&nbsp;<br>
-Args:<br>
-&nbsp;&nbsp;spreadsheet_key:&nbsp;The&nbsp;ID&nbsp;of&nbsp;the&nbsp;spreadsheet&nbsp;<br>
-&nbsp;&nbsp;worksheet_id:</tt></dd></dl>
-</td></tr></table><p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#55aa55">
 <td colspan=3 valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
     
 <tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><strong>BATCH_EDIT_LINK_TEMPLATE</strong> = '%s/batch'<br>
-<strong>BATCH_ENTRY_ID_TEMPLATE</strong> = '%s/R%sC%s'<br>
-<strong>BATCH_POST_ID_TEMPLATE</strong> = 'https://spreadsheets.google.com/feeds/cells/%s/%s/private/full'<br>
-<strong>GSX_NAMESPACE</strong> = 'http://schemas.google.com/spreadsheets/2006/extended'<br>
+<td width="100%"><strong>GSX_NAMESPACE</strong> = 'http://schemas.google.com/spreadsheets/2006/extended'<br>
 <strong>GS_TEMPLATE</strong> = '{http://schemas.google.com/spreadsheets/2006}%s'<br>
 <strong>INSERT_MODE</strong> = 'insert'<br>
 <strong>OVERWRITE_MODE</strong> = 'overwrite'<br>

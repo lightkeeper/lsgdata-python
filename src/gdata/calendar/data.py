@@ -29,9 +29,7 @@ import gdata.geo.data
 import gdata.opensearch.data
 
 
-GCAL_NAMESPACE = 'http://schemas.google.com/gCal/2005'
-GCAL_TEMPLATE = '{%s}%%s' % GCAL_NAMESPACE
-WEB_CONTENT_LINK_REL = '%s/%s' % (GCAL_NAMESPACE, 'webContent')
+GCAL_TEMPLATE = '{http://schemas.google.com/gCal/2005/}%s'
 
 
 class AccessLevelProperty(atom.core.XmlElement):
@@ -166,7 +164,7 @@ class SendAclNotificationsProperty(atom.core.XmlElement):
   value = 'value'
 
 
-class CalendarAclEntry(gdata.acl.data.AclEntry):
+class CalendarAclEntry(gdata.data.GDEntry):
   """Describes an entry in a feed of a Calendar access control list (ACL)"""
   send_acl_notifications = SendAclNotificationsProperty
 
@@ -228,14 +226,9 @@ class SyncEventProperty(atom.core.XmlElement):
   value = 'value'
 
 
-class When(gdata.data.When):
-  """Extends the gd:when element to add reminders"""
-  reminder = [gdata.data.Reminder]
-
-
 class CalendarEventEntry(gdata.data.BatchEntry):
   """Describes a Calendar event entry"""
-  quick_add = QuickAddProperty
+  quickadd = QuickAddProperty
   send_event_notifications = SendEventNotificationsProperty
   sync_event = SyncEventProperty
   anyone_can_add_self = AnyoneCanAddSelfProperty
@@ -248,17 +241,6 @@ class CalendarEventEntry(gdata.data.BatchEntry):
   private_copy = PrivateCopyProperty
   suppress_reply_notifications = SuppressReplyNotificationsProperty
   uid = IcalUIDProperty
-  where = [gdata.data.Where]
-  when = [When]
-  who = [gdata.data.Who]
-  transparency = gdata.data.Transparency
-  comments = gdata.data.Comments
-  event_status = gdata.data.EventStatus
-  visibility = gdata.data.Visibility
-  recurrence = gdata.data.Recurrence
-  recurrence_exception = [gdata.data.RecurrenceException]
-  original_event = gdata.data.OriginalEvent
-  reminder = [gdata.data.Reminder]
 
 
 class TimeZoneProperty(atom.core.XmlElement):
@@ -315,13 +297,4 @@ class WebContent(atom.core.XmlElement):
   url = 'url'
   display = 'display'
 
-
-class WebContentLink(atom.data.Link):
-  """Describes a "web content" link"""
-  def __init__(self, title=None, href=None, link_type=None,
-               web_content=None):
-    atom.data.Link.__init__(self, rel=WEB_CONTENT_LINK_REL, title=title, href=href,
-        link_type=link_type)
-
-  web_content = WebContent
 
