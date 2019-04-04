@@ -22,11 +22,11 @@ __author__ = 'Claudio Cherubino <ccherubino@google.com>'
 
 
 import unittest
+import gdata.apps.emailsettings.client
+import gdata.apps.emailsettings.data
 import gdata.client
 import gdata.data
 import gdata.gauth
-import gdata.apps.emailsettings.client
-import gdata.apps.emailsettings.data
 import gdata.test_config as conf
 
 
@@ -55,11 +55,6 @@ class EmailSettingsClientTest(unittest.TestCase):
     self.assertEqual('apps-apis.google.com', self.client.host)
     self.assertEqual('2.0', self.client.api_version)
     self.assertEqual('apps', self.client.auth_service)
-    self.assertEqual(
-        ('http://www.google.com/a/feeds/',
-         'https://www.google.com/a/feeds/',
-         'http://apps-apis.google.com/a/feeds/',
-         'https://apps-apis.google.com/a/feeds/'), self.client.auth_scopes)
     if conf.options.get_value('runlive') == 'true':
       self.assertEqual(self.client.domain, conf.options.get_value('appsdomain'))
     else:
@@ -70,7 +65,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         'abc', 'label'),
         self.client.MakeEmailSettingsUri('abc', 'label'))
 
-  def testCreateLabel(self):
+  def testCreateDeleteLabel(self):
     if not conf.options.get_value('runlive') == 'true':
       return
 
@@ -84,6 +79,10 @@ class EmailSettingsClientTest(unittest.TestCase):
     self.assert_(isinstance(new_label,
         gdata.apps.emailsettings.data.EmailSettingsLabel))
     self.assertEqual(new_label.name, 'status updates')
+
+    self.client.DeleteLabel(
+        username=conf.options.get_value('targetusername'),
+        label='status updates')
 
   def testCreateFilter(self):
     if not conf.options.get_value('runlive') == 'true':
@@ -258,14 +257,18 @@ class EmailSettingsClientTest(unittest.TestCase):
         username=conf.options.get_value('targetusername'),
         enable=True, subject='Out of office',
         message='If urgent call me at 555-5555.',
-        contacts_only=True)
+        start_date='2011-12-05', end_date='2011-12-06',
+        contacts_only=True, domain_only=False)
 
     self.assert_(isinstance(new_vacation,
         gdata.apps.emailsettings.data.EmailSettingsVacationResponder))
     self.assertEqual(new_vacation.enable, 'True')
     self.assertEqual(new_vacation.subject, 'Out of office')
     self.assertEqual(new_vacation.message, 'If urgent call me at 555-5555.')
+    self.assertEqual(new_vacation.start_date, '2011-12-05')
+    self.assertEqual(new_vacation.end_date, '2011-12-06')
     self.assertEqual(new_vacation.contacts_only, 'True')
+    self.assertEqual(new_vacation.domain_only, 'False')
 
     new_vacation = self.client.UpdateVacation(
         username=conf.options.get_value('targetusername'),

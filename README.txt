@@ -1,3 +1,11 @@
+## Notice about this version
+
+This was an additional fork taken from commit ID eb6826ba1e6046a202158d4fefa672150efa0ca5 from https://github.com/carolinux/gdata-python-client.
+
+This version contains changes that support operation on remote-master
+
+---
+
  Copyright (C) 2006-2010 Google Inc.
 
  Licensed under the Apache License, Version 2.0 (the "License");

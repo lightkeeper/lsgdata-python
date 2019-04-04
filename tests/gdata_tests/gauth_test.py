@@ -21,7 +21,10 @@
 __author__ = 'j.s@google.com (Jeff Scudder)'
 
 
+import sys
+import types
 import unittest
+
 import gdata.gauth
 import atom.http_core
 import gdata.test_config as conf
@@ -49,7 +52,7 @@ PRIVATE_TEST_KEY = """
 class AuthSubTest(unittest.TestCase):
 
   def test_generate_request_url(self):
-    url = gdata.gauth.generate_auth_sub_url('http://example.com', 
+    url = gdata.gauth.generate_auth_sub_url('http://example.com',
         ['http://example.net/scope1'])
     self.assert_(isinstance(url, atom.http_core.Uri))
     self.assertEqual(url.query['secure'], '0')
@@ -58,9 +61,9 @@ class AuthSubTest(unittest.TestCase):
     self.assertEqual(atom.http_core.Uri.parse_uri(
         url.query['next']).query['auth_sub_scopes'],
         'http://example.net/scope1')
-    self.assertEqual(atom.http_core.Uri.parse_uri(url.query['next']).path, 
+    self.assertEqual(atom.http_core.Uri.parse_uri(url.query['next']).path,
         '/')
-    self.assertEqual(atom.http_core.Uri.parse_uri(url.query['next']).host, 
+    self.assertEqual(atom.http_core.Uri.parse_uri(url.query['next']).host,
         'example.com')
 
   def test_from_url(self):
@@ -127,7 +130,7 @@ class TokensToAndFromBlobsTest(unittest.TestCase):
     copy = gdata.gauth.token_from_blob(gdata.gauth.token_to_blob(token))
     self.assertEqual(token.token_string, copy.token_string)
     self.assert_(isinstance(copy, gdata.gauth.AuthSubToken))
-    
+
     scopes = ['http://example.com', 'http://other||test', 'thir|d']
     token = gdata.gauth.AuthSubToken('key-=', scopes)
     copy = gdata.gauth.token_from_blob(gdata.gauth.token_to_blob(token))
@@ -277,6 +280,75 @@ class TokensToAndFromBlobsTest(unittest.TestCase):
     self.assert_(copy.next is None)
     self.assertEqual(copy.verifier, token.verifier)
 
+  def test_oauth2_conversion(self):
+    token = gdata.gauth.OAuth2Token(
+        'clientId', 'clientSecret', 'https://www.google.com/calendar/feeds',
+        'userAgent', 'https://accounts.google.com/o/oauth2/auth',
+        'https://accounts.google.com/o/oauth2/token',
+        'accessToken', 'refreshToken')
+    blob = gdata.gauth.token_to_blob(token)
+    self.assertEqual(
+        blob, '2o|clientId|clientSecret|https%3A%2F%2Fwww.google.com%2F'
+            'calendar%2Ffeeds|userAgent|https%3A%2F%2Faccounts.google.com%2F'
+            'o%2Foauth2%2Fauth|https%3A%2F%2Faccounts.google.com%2Fo%2Foauth2'
+            '%2Ftoken|accessToken|refreshToken')
+    copy = gdata.gauth.token_from_blob(blob)
+    self.assert_(isinstance(copy, gdata.gauth.OAuth2Token))
+
+    self.assertEqual(copy.client_id, token.client_id)
+    self.assertEqual(copy.client_secret, token.client_secret)
+    self.assertEqual(copy.scope, token.scope)
+    self.assertEqual(copy.user_agent, token.user_agent)
+    self.assertEqual(copy.auth_uri, token.auth_uri)
+    self.assertEqual(copy.token_uri, token.token_uri)
+    self.assertEqual(copy.access_token, token.access_token)
+    self.assertEqual(copy.refresh_token, token.refresh_token)
+
+    token = gdata.gauth.OAuth2Token(
+        'clientId', 'clientSecret', 'https://www.google.com/calendar/feeds',
+        '', 'https://accounts.google.com/o/oauth2/auth',
+        'https://accounts.google.com/o/oauth2/token',
+        '', '')
+    blob = gdata.gauth.token_to_blob(token)
+    self.assertEqual(
+        blob, '2o|clientId|clientSecret|https%3A%2F%2Fwww.google.com%2F'
+            'calendar%2Ffeeds||https%3A%2F%2Faccounts.google.com%2F'
+            'o%2Foauth2%2Fauth|https%3A%2F%2Faccounts.google.com%2Fo%2Foauth2'
+            '%2Ftoken||')
+    copy = gdata.gauth.token_from_blob(blob)
+    self.assert_(isinstance(copy, gdata.gauth.OAuth2Token))
+
+    self.assertEqual(copy.client_id, token.client_id)
+    self.assertEqual(copy.client_secret, token.client_secret)
+    self.assertEqual(copy.scope, token.scope)
+    self.assert_(copy.user_agent is None)
+    self.assertEqual(copy.auth_uri, token.auth_uri)
+    self.assertEqual(copy.token_uri, token.token_uri)
+    self.assert_(copy.access_token is None)
+    self.assert_(copy.refresh_token is None)
+
+    token = gdata.gauth.OAuth2Token(
+        'clientId', 'clientSecret', 'https://www.google.com/calendar/feeds',
+        None, 'https://accounts.google.com/o/oauth2/auth',
+        'https://accounts.google.com/o/oauth2/token')
+    blob = gdata.gauth.token_to_blob(token)
+    self.assertEqual(
+        blob, '2o|clientId|clientSecret|https%3A%2F%2Fwww.google.com%2F'
+            'calendar%2Ffeeds||https%3A%2F%2Faccounts.google.com%2F'
+            'o%2Foauth2%2Fauth|https%3A%2F%2Faccounts.google.com%2Fo%2Foauth2'
+            '%2Ftoken||')
+    copy = gdata.gauth.token_from_blob(blob)
+    self.assert_(isinstance(copy, gdata.gauth.OAuth2Token))
+
+    self.assertEqual(copy.client_id, token.client_id)
+    self.assertEqual(copy.client_secret, token.client_secret)
+    self.assertEqual(copy.scope, token.scope)
+    self.assert_(copy.user_agent is None)
+    self.assertEqual(copy.auth_uri, token.auth_uri)
+    self.assertEqual(copy.token_uri, token.token_uri)
+    self.assert_(copy.access_token is None)
+    self.assert_(copy.refresh_token is None)
+
   def test_illegal_token_types(self):
     class MyToken(object):
       pass
@@ -331,7 +403,7 @@ class OAuthHmacTokenTests(unittest.TestCase):
         '6oauth_consumer_key%3Dexample.org%26oauth_nonce%3D12345%26oauth_sig'
         'nature_method%3DHMAC-SHA1%26oauth_timestamp%3D1246301653%26oauth_ve'
         'rsion%3D1.0')
-    
+
     request = atom.http_core.HttpRequest('https://eXample.COM:443', 'get')
     base_string = gdata.gauth.build_oauth_base_string(
         request, 'example.org', '12345', gdata.gauth.HMAC_SHA1, 1246301653,
@@ -380,7 +452,7 @@ class OAuthHmacTokenTests(unittest.TestCase):
         '32%26oauth_version%3D1.0%26scope%3Dhttps%253A%252F%252Fdocs.google.'
         'com%252Ffeeds%252F%2520http%253A%252F%252Fdocs.google.com%252Ffeeds'
         '%252F')
-        
+
   def test_generate_hmac_signature(self):
     # Use the example from the OAuth playground:
     # http://googlecodesamples.com/oauth_playground/
@@ -388,8 +460,8 @@ class OAuthHmacTokenTests(unittest.TestCase):
         'https://www.google.com/accounts/OAuthGetRequestToken?'
         'scope=http%3A%2F%2Fwww.blogger.com%2Ffeeds%2F', 'GET')
     signature = gdata.gauth.generate_hmac_signature(
-        request, 'anonymous', 'anonymous', '1246491360', 
-        'c0155b3f28697c029e7a62efff44bd46', '1.0', 
+        request, 'anonymous', 'anonymous', '1246491360',
+        'c0155b3f28697c029e7a62efff44bd46', '1.0',
         next='http://googlecodesamples.com/oauth_playground/index.php')
     self.assertEqual(signature, '5a2GPdtAY3LWYv8IdiT3wp1Coeg=')
 
@@ -398,7 +470,7 @@ class OAuthHmacTokenTests(unittest.TestCase):
         'https://www.google.com/accounts/OAuthGetRequestToken', 'GET')
     request.uri.query['scope'] = 'http://www.blogger.com/feeds/'
     signature = gdata.gauth.generate_hmac_signature(
-        request, 'anonymous', 'anonymous', '1246491360', 
+        request, 'anonymous', 'anonymous', '1246491360',
         'c0155b3f28697c029e7a62efff44bd46', '1.0',
         'http://googlecodesamples.com/oauth_playground/index.php')
     self.assertEqual(signature, '5a2GPdtAY3LWYv8IdiT3wp1Coeg=')
@@ -410,8 +482,8 @@ class OAuthHmacTokenTests(unittest.TestCase):
                                   'http://www.google.com/base/feeds/ '
                                   'http://www.google.com/calendar/feeds/')
     signature = gdata.gauth.generate_hmac_signature(
-        request, 'anonymous', 'anonymous', 1246491797, 
-        '33209c4d7a09be4eb1d6ff18e00f8548', '1.0', 
+        request, 'anonymous', 'anonymous', 1246491797,
+        '33209c4d7a09be4eb1d6ff18e00f8548', '1.0',
         next='http://googlecodesamples.com/oauth_playground/index.php')
     self.assertEqual(signature, 'kFAgTTFDIWz4/xAabIlrcZZMTq8=')
 
@@ -431,6 +503,159 @@ class OAuthRsaTokenTests(unittest.TestCase):
         'bfMantdttKaTrwoxU87JiXmMeXhAiXPiq79a5XmLlOYwwlX06Pu7CafMp7hW1fPeZtL'
         '4o9Sz3NvPI8GECCaZk7n5vi1EJ5/wfIQbddrC8j45joBG6gFSf4tRJct82dSyn6bd71'
         'knwPZH1sKK46Y0ePJvEIDI3JDd7pRZuMM2sN8=')
+
+
+class OAuth2TokenTests(unittest.TestCase):
+
+  def test_generate_authorize_url(self):
+    token = gdata.gauth.OAuth2Token('clientId', 'clientSecret',
+                                    'https://www.google.com/calendar/feeds',
+                                    'userAgent')
+    url = token.generate_authorize_url()
+    self.assertEqual(
+        url,
+        'https://accounts.google.com/o/oauth2/auth?access_type=offline&'
+        'redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&'
+        'client_id=clientId&approval_prompt=auto&'
+        'scope=https%3A%2F%2Fwww.google.com%2Fcalendar%2Ffeeds')
+    url = token.generate_authorize_url('https://www.example.com/redirect',
+                                       'token')
+    self.assertEqual(
+        url,
+        'https://accounts.google.com/o/oauth2/auth?access_type=offline&'
+        'redirect_uri=https%3A%2F%2Fwww.example.com%2Fredirect&'
+        'response_type=token&client_id=clientId&approval_prompt=auto&'
+        'scope=https%3A%2F%2Fwww.google.com%2Fcalendar%2Ffeeds')
+    url = token.generate_authorize_url(access_type='online')
+    self.assertEqual(
+        url,
+        'https://accounts.google.com/o/oauth2/auth?access_type=online&'
+        'redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&'
+        'client_id=clientId&approval_prompt=auto&'
+        'scope=https%3A%2F%2Fwww.google.com%2Fcalendar%2Ffeeds')
+
+  def test_modify_request(self):
+    token = gdata.gauth.OAuth2Token('clientId', 'clientSecret',
+                                    'https://www.google.com/calendar/feeds',
+                                    'userAgent', access_token='accessToken')
+    request = atom.http_core.HttpRequest()
+    token.modify_request(request)
+    self.assertEqual(request.headers['Authorization'], 'Bearer accessToken')
+
+
+class OAuth2TokenFromCredentialsTest(unittest.TestCase):
+  class DummyCredentials(object):
+    def __init__(self, *args, **kwargs):
+      self.client_id = 'client_id'
+      self.client_secret = 'client_secret'
+      self.user_agent = 'user_agent'
+      self.token_uri = 'token_uri'
+      self.access_token = 'access_token'
+      self.refresh_token = 'refresh_token'
+      self.token_expiry = 'token_expiry'
+      self.invalid = 'invalid'
+
+      self._refresh_called = False
+
+    def _refresh(self, unused_http_request):
+      self._refresh_called = True
+
+  def setUp(self):
+    # Don't want to force the test to have a dependency on httplib2,
+    # which is a dependency of google-api-python-client
+    self._httplib2 = sys.modules.get('httplib2')
+
+    dummy_httplib2 = types.ModuleType('httplib2')
+
+    class DummyHttp(object):
+      def request(self, *args, **kwargs):
+        pass
+
+    dummy_httplib2.Http = DummyHttp
+    sys.modules['httplib2'] = dummy_httplib2
+
+    self.credentials = self.DummyCredentials()
+    self.token = gdata.gauth.OAuth2TokenFromCredentials(self.credentials)
+
+  def tearDown(self):
+    del sys.modules['httplib2']
+    if self._httplib2 is not None:
+      sys.modules['httplib2'] = self._httplib2
+    del self._httplib2
+
+  def _check_all_values(self):
+    self.assertEqual(self.token.client_id, self.credentials.client_id)
+    self.assertEqual(self.token.client_secret, self.credentials.client_secret)
+    self.assertEqual(self.token.user_agent, self.credentials.user_agent)
+    self.assertEqual(self.token.token_uri, self.credentials.token_uri)
+    self.assertEqual(self.token.access_token, self.credentials.access_token)
+    self.assertEqual(self.token.refresh_token, self.credentials.refresh_token)
+    self.assertEqual(self.token.token_expiry, self.credentials.token_expiry)
+    self.assertEqual(self.token._invalid, self.credentials.invalid)
+
+  def test_get_proxied_attributes(self):
+    self._check_all_values()
+
+  def test_get_proxied_values_notset(self):
+    proxy_keys = ['client_id', 'client_secret', 'user_agent', 'token_uri',
+                  'access_token', 'refresh_token', 'token_expiry', '_invalid']
+    for key in proxy_keys:
+      self.assertFalse(self.token.__dict__.has_key(key))
+
+  def test_get_proxied_values_change_credentials(self):
+    new_value = 'NEW_VALUE'
+    self.credentials.access_token = new_value
+    self.assertEqual(self.token.access_token, new_value)
+
+    self.credentials.invalid = new_value
+    self.assertEqual(self.token._invalid, new_value)
+
+  def test_get_proxied_values_change_credentials(self):
+    # Make sure scope is not a valid attribute (ignored in this subclass)
+    self.assertFalse(self.token.__dict__.has_key('scope'))
+    self.assertFalse(self.token.__class__.__dict__.has_key('scope'))
+    # Make sure attribute lookup fails as it should
+    self.assertRaises(AttributeError, getattr, self.token, 'scope')
+    self.assertRaises(AttributeError, lambda: self.token.scope)
+
+  def test_set_proxied_values(self):
+    # Check all values after each setattr to make sure no side affects
+    self.token.client_id = 'value1'
+    self._check_all_values()
+    self.token.client_secret = 'value2'
+    self._check_all_values()
+    self.token.user_agent = 'value3'
+    self._check_all_values()
+    self.token.token_uri = 'value4'
+    self._check_all_values()
+    self.token.access_token = 'value5'
+    self._check_all_values()
+    self.token.refresh_token = 'value6'
+    self._check_all_values()
+    self.token.token_expiry = 'value7'
+    self._check_all_values()
+    self.token._invalid = 'value8'
+    self._check_all_values()
+
+  def test_set_proxied_values_nonprotected_attribute(self):
+    self.assertFalse(self.token.__dict__.has_key('scope'))
+    self.assertFalse(self.token.__class__.__dict__.has_key('scope'))
+    self.token.scope = 'value'
+    self.assertEqual(self.token.scope, 'value')
+    self.assertFalse(hasattr(self.credentials, 'scope'))
+    self._check_all_values()
+
+  def test_disallowed(self):
+    self.assertRaises(NotImplementedError, self.token.generate_authorize_url)
+    self.assertRaises(NotImplementedError, self.token.get_access_token)
+    self.assertRaises(NotImplementedError, self.token.revoke)
+    self.assertRaises(NotImplementedError, self.token._extract_tokens)
+
+  def test_refresh(self):
+    dummy_gdata_request_object = object()
+    self.assertFalse(self.credentials._refresh_called)
+    self.token._refresh(dummy_gdata_request_object)
+    self.assertTrue(self.credentials._refresh_called)
 
 
 class OAuthHeaderTest(unittest.TestCase):
@@ -459,9 +684,9 @@ class OAuthGetRequestToken(unittest.TestCase):
 
   def test_request_hmac_request_token(self):
     request = gdata.gauth.generate_request_for_request_token(
-        'anonymous', gdata.gauth.HMAC_SHA1, 
-        ['http://www.blogger.com/feeds/', 
-         'http://www.google.com/calendar/feeds/'], 
+        'anonymous', gdata.gauth.HMAC_SHA1,
+        ['http://www.blogger.com/feeds/',
+         'http://www.google.com/calendar/feeds/'],
         consumer_secret='anonymous')
     request_uri = str(request.uri)
     self.assert_('http%3A%2F%2Fwww.blogger.com%2Ffeeds%2F' in request_uri)
@@ -477,9 +702,9 @@ class OAuthGetRequestToken(unittest.TestCase):
 
   def test_request_rsa_request_token(self):
     request = gdata.gauth.generate_request_for_request_token(
-        'anonymous', gdata.gauth.RSA_SHA1, 
-        ['http://www.blogger.com/feeds/', 
-         'http://www.google.com/calendar/feeds/'], 
+        'anonymous', gdata.gauth.RSA_SHA1,
+        ['http://www.blogger.com/feeds/',
+         'http://www.google.com/calendar/feeds/'],
         rsa_key=PRIVATE_TEST_KEY)
     request_uri = str(request.uri)
     self.assert_('http%3A%2F%2Fwww.blogger.com%2Ffeeds%2F' in request_uri)
@@ -554,10 +779,10 @@ class FindScopesForService(unittest.TestCase):
 
   def test_multiple_services(self):
     self.assertEqual(
-        gdata.gauth.find_scopes_for_services(('jotspot', 'wise')),
-        ['http://sites.google.com/feeds/', 'https://sites.google.com/feeds/',
-         'https://spreadsheets.google.com/feeds/',
-         'http://spreadsheets.google.com/feeds/'])
+        set(gdata.gauth.find_scopes_for_services(('jotspot', 'wise'))),
+        set(['http://sites.google.com/feeds/',
+             'https://sites.google.com/feeds/',
+             'https://spreadsheets.google.com/feeds/']))
 
 
 def suite():

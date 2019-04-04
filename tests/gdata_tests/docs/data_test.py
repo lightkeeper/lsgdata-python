@@ -26,69 +26,15 @@ import gdata.docs.data
 import gdata.test_config as conf
 
 
-class DocsHelperTest(unittest.TestCase):
-
-  def setUp(self):
-    pass
-
-  def testMakeKindCategory(self):
-    category = gdata.docs.data.MakeKindCategory('folder')
-    self.assertEqual(category.label, 'folder')
-    self.assertEqual(category.scheme, 'http://schemas.google.com/g/2005#kind')
-    self.assertEqual(
-        category.term, 'http://schemas.google.com/docs/2007#folder')
-
-    category = gdata.docs.data.MakeKindCategory('spreadsheet')
-    self.assertEqual(category.label, 'spreadsheet')
-    self.assertEqual(category.scheme, 'http://schemas.google.com/g/2005#kind')
-    self.assertEqual(
-        category.term, 'http://schemas.google.com/docs/2007#spreadsheet')
-
-  def testMakeContentLinkFromResourceId(self):
-    link = gdata.docs.data.make_content_link_from_resource_id(
-        'document%3A1234567890')
-    self.assertEqual(link, '/feeds/download/documents/Export?docId=1234567890')
-
-    link2 = gdata.docs.data.make_content_link_from_resource_id(
-        'presentation%3A1234567890')
-    self.assertEqual(
-        link2, '/feeds/download/presentations/Export?docId=1234567890')
-
-    link3 = gdata.docs.data.make_content_link_from_resource_id(
-        'spreadsheet%3A1234567890')
-    self.assertEqual(
-        link3, ('http://spreadsheets.google.com/feeds/download/spreadsheets/'
-                'Export?key=1234567890'))
-
-    # Try an invalid resource id.
-    exception_raised = False
-    try:
-      link4 = gdata.docs.data.make_content_link_from_resource_id('1234567890')
-    except ValueError, e:  # expected
-      exception_raised = True
-
-    self.assert_(exception_raised)
-    
-    # Try an resource id that cannot be exported.
-    exception_raised = False
-    try:
-      link4 = gdata.docs.data.make_content_link_from_resource_id(
-          'pdf%3A1234567890')
-    except ValueError, e:  # expected
-      exception_raised = True
-
-    self.assert_(exception_raised)
-
-
 class DocsEntryTest(unittest.TestCase):
 
   def setUp(self):
     self.entry = atom.core.parse(test_data.DOCUMENT_LIST_ENTRY_V3,
-                                 gdata.docs.data.DocsEntry)
+                                 gdata.docs.data.Resource)
 
   def testToAndFromStringDocsEntry(self):
-    self.assert_(isinstance(self.entry, gdata.docs.data.DocsEntry))
-    self.assertEqual(self.entry.GetDocumentType(), 'spreadsheet')
+    self.assert_(isinstance(self.entry, gdata.docs.data.Resource))
+    self.assertEqual(self.entry.GetResourceType(), 'spreadsheet')
     self.assert_(isinstance(self.entry.last_viewed, gdata.docs.data.LastViewed))
     self.assertEqual(self.entry.last_viewed.text, '2009-03-05T07:48:21.493Z')
     self.assert_(
@@ -109,26 +55,31 @@ class DocsEntryTest(unittest.TestCase):
     self.assert_(isinstance(self.entry.feed_link[0], gdata.data.FeedLink))
 
     self.assertEqual(
-        self.entry.get_acl_feed_link().href,
-        ('http://docs.google.com/feeds/default/private/full/'
+        self.entry.GetAclFeedLink().href,
+        ('https://docs.google.com/feeds/default/private/full/'
          'spreadsheet%3Asupercalifragilisticexpealidocious/acl'))
     self.assertEqual(
-        self.entry.get_revisions_feed_link().href,
-        ('http://docs.google.com/feeds/default/private/full/'
+        self.entry.GetRevisionsFeedLink().href,
+        ('https://docs.google.com/feeds/default/private/full/'
          'spreadsheet%3Asupercalifragilisticexpealidocious/revisions'))
 
-    self.assertEqual(len(self.entry.in_folders()), 1)
-    self.assertEqual(self.entry.in_folders()[0].title, 'AFolderName')
+    self.assertEqual(len(self.entry.InCollections()), 1)
+    self.assertEqual(self.entry.InCollections()[0].title, 'AFolderName')
 
 
 class AclTest(unittest.TestCase):
 
   def setUp(self):
     self.acl_entry = atom.core.parse(test_data.DOCUMENT_LIST_ACL_ENTRY,
-                                     gdata.docs.data.Acl)
+                                     gdata.docs.data.AclEntry)
+    self.acl_entry_withkey = atom.core.parse(
+      test_data.DOCUMENT_LIST_ACL_WITHKEY_ENTRY, gdata.docs.data.AclEntry)
+    self.acl_entry_additional_role = atom.core.parse(
+      test_data.DOCUMENT_LIST_ACL_ADDITIONAL_ROLE_ENTRY,
+      gdata.docs.data.AclEntry)
 
   def testToAndFromString(self):
-    self.assert_(isinstance(self.acl_entry, gdata.docs.data.Acl))
+    self.assert_(isinstance(self.acl_entry, gdata.docs.data.AclEntry))
     self.assert_(isinstance(self.acl_entry.role, gdata.acl.data.AclRole))
     self.assert_(isinstance(self.acl_entry.scope, gdata.acl.data.AclScope))
     self.assertEqual(self.acl_entry.scope.value, 'user@gmail.com')
@@ -136,13 +87,47 @@ class AclTest(unittest.TestCase):
     self.assertEqual(self.acl_entry.role.value, 'writer')
 
     acl_entry_str = str(self.acl_entry)
-    new_acl_entry = atom.core.parse(acl_entry_str, gdata.docs.data.Acl)
-    self.assert_(isinstance(new_acl_entry, gdata.docs.data.Acl))
+    new_acl_entry = atom.core.parse(acl_entry_str, gdata.docs.data.AclEntry)
+    self.assert_(isinstance(new_acl_entry, gdata.docs.data.AclEntry))
     self.assert_(isinstance(new_acl_entry.role, gdata.acl.data.AclRole))
     self.assert_(isinstance(new_acl_entry.scope, gdata.acl.data.AclScope))
     self.assertEqual(new_acl_entry.scope.value, self.acl_entry.scope.value)
     self.assertEqual(new_acl_entry.scope.type, self.acl_entry.scope.type)
     self.assertEqual(new_acl_entry.role.value, self.acl_entry.role.value)
+
+  def testToAndFromStringWithKey(self):
+    self.assert_(isinstance(self.acl_entry_withkey, gdata.docs.data.AclEntry))
+    self.assert_(self.acl_entry_withkey.role is None)
+    self.assert_(isinstance(self.acl_entry_withkey.with_key,
+                            gdata.acl.data.AclWithKey))
+    self.assert_(isinstance(self.acl_entry_withkey.with_key.role,
+                            gdata.acl.data.AclRole))
+    self.assert_(isinstance(self.acl_entry_withkey.scope,
+                            gdata.acl.data.AclScope))
+    self.assertEqual(self.acl_entry_withkey.with_key.key, 'somekey')
+    self.assertEqual(self.acl_entry_withkey.with_key.role.value, 'writer')
+    self.assertEqual(self.acl_entry_withkey.scope.value, 'example.com')
+    self.assertEqual(self.acl_entry_withkey.scope.type, 'domain')
+
+    acl_entry_withkey_str = str(self.acl_entry_withkey)
+    new_acl_entry_withkey = atom.core.parse(acl_entry_withkey_str,
+                                            gdata.docs.data.AclEntry)
+    self.assert_(isinstance(new_acl_entry_withkey, gdata.docs.data.AclEntry))
+    self.assert_(new_acl_entry_withkey.role is None)
+    self.assert_(isinstance(new_acl_entry_withkey.with_key,
+                            gdata.acl.data.AclWithKey))
+    self.assert_(isinstance(new_acl_entry_withkey.with_key.role,
+                            gdata.acl.data.AclRole))
+    self.assert_(isinstance(new_acl_entry_withkey.scope,
+                            gdata.acl.data.AclScope))
+    self.assertEqual(new_acl_entry_withkey.with_key.key,
+                     self.acl_entry_withkey.with_key.key)
+    self.assertEqual(new_acl_entry_withkey.with_key.role.value,
+                     self.acl_entry_withkey.with_key.role.value)
+    self.assertEqual(new_acl_entry_withkey.scope.value,
+                     self.acl_entry_withkey.scope.value)
+    self.assertEqual(new_acl_entry_withkey.scope.type,
+                     self.acl_entry_withkey.scope.type)
 
   def testCreateNewAclEntry(self):
     cat = gdata.atom.Category(
@@ -158,6 +143,14 @@ class AclTest(unittest.TestCase):
     self.assertEqual(acl_entry.scope.type, 'user')
     self.assertEqual(acl_entry.role.value, 'writer')
 
+  def testAdditionalRole(self):
+    self.assertEqual(
+        self.acl_entry_additional_role.additional_role.value,
+        'commenter')
+    self.assertEqual(
+        self.acl_entry_additional_role.with_key.additional_role.value,
+        'commenter')
+
 
 class AclFeedTest(unittest.TestCase):
 
@@ -167,11 +160,11 @@ class AclFeedTest(unittest.TestCase):
 
   def testToAndFromString(self):
     for entry in self.feed.entry:
-      self.assert_(isinstance(entry, gdata.docs.data.Acl))
+      self.assert_(isinstance(entry, gdata.docs.data.AclEntry))
 
     feed = atom.core.parse(str(self.feed), gdata.docs.data.AclFeed)
     for entry in feed.entry:
-      self.assert_(isinstance(entry, gdata.docs.data.Acl))
+      self.assert_(isinstance(entry, gdata.docs.data.AclEntry))
 
   def testConvertActualData(self):
     entries = self.feed.entry
@@ -215,10 +208,10 @@ class RevisionFeedTest(unittest.TestCase):
     self.assertEqual(entries[0].publish_outside_domain.value, 'false')
     self.assertEqual(
          entries[0].GetPublishLink().href,
-         'http://docs.google.com/View?docid=dfr4&pageview=1&hgd=1')
+         'https://docs.google.com/View?docid=dfr4&pageview=1&hgd=1')
     self.assertEqual(
          entries[0].FindPublishLink(),
-         'http://docs.google.com/View?docid=dfr4&pageview=1&hgd=1')
+         'https://docs.google.com/View?docid=dfr4&pageview=1&hgd=1')
 
 
 class DataClassSanityTest(unittest.TestCase):
@@ -229,14 +222,155 @@ class DataClassSanityTest(unittest.TestCase):
         gdata.docs.data.LastViewed, gdata.docs.data.WritersCanInvite,
         gdata.docs.data.QuotaBytesUsed, gdata.docs.data.Publish,
         gdata.docs.data.PublishAuto, gdata.docs.data.PublishOutsideDomain,
-        gdata.docs.data.DocsEntry, gdata.docs.data.Acl, gdata.docs.data.AclFeed,
-        gdata.docs.data.DocList, gdata.docs.data.Revision,
+        gdata.docs.data.Resource, gdata.docs.data.AclEntry, gdata.docs.data.AclFeed,
+        gdata.docs.data.ResourceFeed, gdata.docs.data.Revision,
         gdata.docs.data.RevisionFeed])
+
+
+class CategoryTest(unittest.TestCase):
+
+  def setUp(self):
+    self.entry = atom.core.parse(test_data.DOCUMENT_LIST_ENTRY_V3,
+                                 gdata.docs.data.Resource)
+
+  def testAddCategory(self):
+    entry = gdata.docs.data.Resource()
+    entry.AddCategory('test_scheme', 'test_term', 'test_label')
+    self.assertEqual(entry.GetFirstCategory('test_scheme').scheme,
+                     'test_scheme')
+    self.assertEqual(entry.GetFirstCategory('test_scheme').term, 'test_term')
+    self.assertEqual(entry.GetFirstCategory('test_scheme').label, 'test_label')
+
+  def testGetFirstCategory(self):
+    entry = gdata.docs.data.Resource()
+    cat1 = entry.AddCategory('test_scheme', 'test_term1', 'test_label1')
+    cat2 = entry.AddCategory('test_scheme', 'test_term2', 'test_label2')
+    self.assertEqual(entry.GetFirstCategory('test_scheme'), cat1)
+
+  def testGetCategories(self):
+    cat1 = self.entry.AddCategory('test_scheme', 'test_term1', 'test_label1')
+    cat2 = self.entry.AddCategory('test_scheme', 'test_term2', 'test_label2')
+    cats = list(self.entry.GetCategories('test_scheme'))
+    self.assertTrue(cat1 in cats)
+    self.assertTrue(cat2 in cats)
+
+  def testRemoveCategories(self):
+    self.entry.RemoveCategories(gdata.docs.data.LABELS_SCHEME)
+    self.assertEqual(self.entry.GetLabels(), set())
+
+  def testResourceType(self):
+    entry = gdata.docs.data.Resource('spreadsheet')
+    self.assertEqual(self.entry.GetResourceType(), 'spreadsheet')
+
+  def testGetResourceType(self):
+    self.assertEqual(self.entry.GetResourceType(), 'spreadsheet')
+
+  def testSetResourceType(self):
+    self.assertEqual(self.entry.GetResourceType(), 'spreadsheet')
+    self.entry.SetResourceType('drawing')
+    self.assertEqual(self.entry.GetResourceType(), 'drawing')
+
+  def testGetLabels(self):
+    self.assertEqual(self.entry.GetLabels(),
+                     set(['mine', 'private', 'restricted-download',
+                          'shared-with-domain', 'viewed', 'starred', 'hidden',
+                          'trashed']))
+
+  def testAddLabel(self):
+    entry = gdata.docs.data.Resource()
+    entry.AddLabel('banana')
+    self.assertTrue('banana' in entry.GetLabels())
+
+  def testRemoveLabel(self):
+    entry = gdata.docs.data.Resource()
+    entry.AddLabel('banana')
+    entry.AddLabel('orange')
+    self.assertTrue('banana' in entry.GetLabels())
+    self.assertTrue('orange' in entry.GetLabels())
+    entry.RemoveLabel('orange')
+    self.assertFalse('orange' in entry.GetLabels())
+
+  def testIsHidden(self):
+    self.assertTrue(self.entry.IsHidden())
+
+  def testIsNotHidden(self):
+    self.entry.remove_categories(gdata.docs.data.LABELS_SCHEME)
+    self.assertFalse(self.entry.IsHidden())
+
+  def testIsViewed(self):
+    self.assertTrue(self.entry.IsViewed())
+
+  def testIsNotViewed(self):
+    self.entry.remove_categories(gdata.docs.data.LABELS_SCHEME)
+    self.assertFalse(self.entry.IsViewed())
+
+  def testIsStarred(self):
+    self.assertTrue(self.entry.IsStarred())
+
+  def testIsNotStarred(self):
+    self.entry.remove_categories(gdata.docs.data.LABELS_SCHEME)
+    self.assertFalse(self.entry.IsStarred())
+
+  def testIsTrashed(self):
+    self.assertTrue(self.entry.IsTrashed())
+
+  def testIsNotTrashed(self):
+    self.entry.remove_categories(gdata.docs.data.LABELS_SCHEME)
+    self.assertFalse(self.entry.IsTrashed())
+
+  def testIsPrivate(self):
+    self.assertTrue(self.entry.IsPrivate())
+
+  def testIsNotPrivate(self):
+    self.entry.remove_categories(gdata.docs.data.LABELS_SCHEME)
+    self.assertFalse(self.entry.IsPrivate())
+
+  def testIsMine(self):
+    self.assertTrue(self.entry.IsMine())
+
+  def testIsNotMine(self):
+    self.entry.remove_categories(gdata.docs.data.LABELS_SCHEME)
+    self.assertFalse(self.entry.IsMine())
+
+  def testIsSharedWithDomain(self):
+    self.assertTrue(self.entry.IsSharedWithDomain())
+
+  def testIsNotSharedWithDomain(self):
+    self.entry.remove_categories(gdata.docs.data.LABELS_SCHEME)
+    self.assertFalse(self.entry.IsSharedWithDomain())
+
+  def testIsRestrictedDownload(self):
+    self.assertTrue(self.entry.IsRestrictedDownload())
+
+  def testIsNotRestrictedDownload(self):
+    self.entry.remove_categories(gdata.docs.data.LABELS_SCHEME)
+    self.assertFalse(self.entry.IsRestrictedDownload())
+
+
+class MetadataTest(unittest.TestCase):
+
+  def setUp(self):
+    self.entry = atom.core.parse(test_data.DOCUMENT_LIST_METADATA,
+                                 gdata.docs.data.Metadata)
+
+  def testAdditionalRoleInfo(self):
+    self.assertEqual(self.entry.additional_role_info[0].kind, 'document')
+
+  def testAdditionalRoleSet(self):
+    self.assertEqual(
+        self.entry.additional_role_info[0].additional_role_set[0].primaryRole,
+        'reader')
+
+  def testAdditionalRole(self):
+    self.assertEqual(
+        self.entry.additional_role_info[0].additional_role_set[0].\
+            additional_role[0].value, 'commenter')
 
 
 def suite():
   return conf.build_suite(
-      [DataClassSanityTest, DocsHelperTest, DocsEntryTest, AclTest, AclFeed])
+      [DataClassSanityTest, CategoryTest, DocsHelperTest, DocsEntryTest,
+       AclTest, AclFeed, MetadataTest])
 
 
 if __name__ == '__main__':
